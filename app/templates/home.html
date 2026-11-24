@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="hero-panel">
+  <h1>Infrastructure at a glance</h1>
+  <p class="lede">
+    Read-only live view of Linux CPU, memory, disk, network, and port usage —
+    without SSH-ing into each host.
+  </p>
+</section>
+
+<section class="panel">
+  <h2>Getting started</h2>
+  <ol class="steps">
+    <li>Sign in as <code>admin</code> (next increment)</li>
+    <li>Add Linux servers by hostname or IP</li>
+    <li>Open a host to inspect live metrics</li>
+  </ol>
+  <p class="muted">This shell is intentionally minimal. Inventory and metrics arrive in later steps.</p>
+</section>
+{% endblock %}
