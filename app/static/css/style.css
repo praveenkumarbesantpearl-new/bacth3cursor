@@ -172,6 +172,187 @@ code {
   margin: 0;
 }
 
+.flash-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.flash {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.flash-ok {
+  background: #e7f6ef;
+  border-color: #9dceb5;
+}
+
+.flash-error {
+  background: #fdeceb;
+  border-color: #e3b0aa;
+}
+
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.panel-head h1,
+.panel-head h2 {
+  margin: 0;
+}
+
+.panel.narrow {
+  max-width: 32rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.form input,
+.form select {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.form-actions,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.55rem 0.9rem;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #345560;
+}
+
+.btn-danger {
+  background: #a33b32;
+}
+
+.btn-small {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.85rem;
+}
+
+.nav-form {
+  display: inline;
+  margin: 0;
+}
+
+.nav-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.55rem 0.45rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.data-table .actions form {
+  display: inline;
+}
+
+.server-summary {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.server-summary li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1.25rem;
+}
+
+.metric-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  background: #f7fbfa;
+}
+
+.metric-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.metric-value {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 1.4rem 0 0.4rem;
+  font-size: 1.1rem;
+}
+
 @media (max-width: 640px) {
   .site-header {
     align-items: flex-start;

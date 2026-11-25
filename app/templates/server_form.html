@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{% if mode == 'edit' %}Edit server{% else %}Add server{% endif %} · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="panel narrow">
+  <h1>{% if mode == 'edit' %}Edit server{% else %}Add Linux server{% endif %}</h1>
+  <p class="muted">Hostname / IP is required and editable later. SSH passwords are never shown back in the UI.</p>
+
+  <form method="post" class="form" autocomplete="off">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+    <label>
+      Label (optional)
+      <input type="text" name="label" value="{{ server.label if server else '' }}">
+    </label>
+
+    <label>
+      Hostname / IP
+      <input type="text" name="hostname" value="{{ server.hostname if server else '' }}" required>
+    </label>
+
+    <label>
+      SSH port
+      <input type="number" name="ssh_port" min="1" max="65535" value="{{ server.ssh_port if server else 22 }}">
+    </label>
+
+    <label>
+      SSH username
+      <input type="text" name="ssh_username" value="{{ server.ssh_username if server else 'root' }}">
+    </label>
+
+    <label>
+      Auth type
+      <select name="auth_type">
+        <option value="password" {% if not server or server.auth_type == 'password' %}selected{% endif %}>Password</option>
+        <option value="key" {% if server and server.auth_type == 'key' %}selected{% endif %}>Private key path</option>
+      </select>
+    </label>
+
+    <label>
+      SSH password {% if mode == 'edit' %}<span class="muted">(leave blank to keep existing)</span>{% endif %}
+      <input type="password" name="ssh_password" value="" autocomplete="new-password">
+    </label>
+
+    <label>
+      SSH private key path (on this Cursor host)
+      <input type="text" name="ssh_key_path" value="{{ server.ssh_key_path if server and server.ssh_key_path else '' }}" placeholder="/home/you/.ssh/id_rsa">
+    </label>
+
+    <div class="form-actions">
+      <button class="btn" type="submit">{% if mode == 'edit' %}Save{% else %}Add server{% endif %}</button>
+      <a class="btn btn-secondary" href="{{ url_for('main.servers_list') }}">Cancel</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

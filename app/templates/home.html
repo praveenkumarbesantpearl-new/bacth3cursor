@@ -12,12 +12,23 @@
 </section>
 
 <section class="panel">
-  <h2>Getting started</h2>
-  <ol class="steps">
-    <li>Sign in as <code>admin</code> (next increment)</li>
-    <li>Add Linux servers by hostname or IP</li>
-    <li>Open a host to inspect live metrics</li>
-  </ol>
-  <p class="muted">This shell is intentionally minimal. Inventory and metrics arrive in later steps.</p>
+  <div class="panel-head">
+    <h2>Monitored servers</h2>
+    <a class="btn" href="{{ url_for('main.servers_add') }}">Add server</a>
+  </div>
+  {% if servers %}
+    <ul class="server-summary">
+      {% for s in servers %}
+        <li>
+          <a href="{{ url_for('main.server_detail', server_id=s.id) }}">
+            {{ s.label or s.hostname }}
+          </a>
+          <span class="muted">{{ s.hostname }}:{{ s.ssh_port }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p class="muted">No servers yet. Add a Linux host to start monitoring.</p>
+  {% endif %}
 </section>
 {% endblock %}
