@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}{{ server.label or server.hostname }} · Server Monitor{% endblock %}
+
+{% block content %}
+<section class="panel">
+  <div class="panel-head">
+    <div>
+      <h1>{{ server.label or server.hostname }}</h1>
+      <p class="muted">{{ server.ssh_username }}@{{ server.hostname }}:{{ server.ssh_port }} · read-only</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-secondary" href="{{ url_for('main.server_detail', server_id=server.id) }}">Refresh</a>
+      <a class="btn btn-secondary" href="{{ url_for('main.servers_edit', server_id=server.id) }}">Edit</a>
+      <a class="btn btn-secondary" href="{{ url_for('main.servers_list') }}">Back</a>
+    </div>
+  </div>
+
+  {% if not metrics.ok %}
+    <div class="flash flash-error">Could not collect metrics: {{ metrics.error }}</div>
+  {% else %}
+    <div class="metrics-grid">
+      <article class="metric-card">
+        <h2>CPU</h2>
+        <p class="metric-value">{{ metrics.cpu.usage_percent if metrics.cpu.usage_percent is not none else "—" }}%</p>
+        <p class="muted">Overall usage from /proc/stat</p>
+      </article>
+      <article class="metric-card">
+        <h2>Memory</h2>
+        <p class="metric-value">{{ metrics.memory.used_percent if metrics.memory.used_percent is not none else "—" }}%</p>
+        <p class="muted">
+          {% if metrics.memory.used_kb is not none and metrics.memory.total_kb is not none %}
+            {{ (metrics.memory.used_kb / 1024) | round(0) | int }} / {{ (metrics.memory.total_kb / 1024) | round(0) | int }} MiB used
+          {% else %}
+            Unavailable
+          {% endif %}
+        </p>
+      </article>
+    </div>
+
+    <h2 class="section-title">Disk</h2>
+    {% if metrics.disk %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Filesystem</th><th>Size</th><th>Used</th><th>Avail</th><th>Use%</th><th>Mount</th></tr>
+          </thead>
+          <tbody>
+            {% for d in metrics.disk %}
+              <tr>
+                <td>{{ d.filesystem }}</td>
+                <td>{{ d.size }}</td>
+                <td>{{ d.used }}</td>
+                <td>{{ d.available }}</td>
+                <td>{{ d.use_percent }}</td>
+                <td>{{ d.mounted_on }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">No disk data.</p>
+    {% endif %}
+
+    <h2 class="section-title">Network (counters)</h2>
+    {% if metrics.network %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Interface</th><th>RX bytes</th><th>TX bytes</th></tr>
+          </thead>
+          <tbody>
+            {% for n in metrics.network %}
+              <tr>
+                <td>{{ n.interface }}</td>
+                <td>{{ n.rx_bytes }}</td>
+                <td>{{ n.tx_bytes }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">No network data.</p>
+    {% endif %}
+
+    <h2 class="section-title">Listening ports</h2>
+    <p class="muted">Sockets waiting for inbound connections.</p>
+    {% if metrics.listening %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Protocol</th><th>State</th><th>Local</th><th>Peer</th></tr>
+          </thead>
+          <tbody>
+            {% for c in metrics.listening %}
+              <tr>
+                <td>{{ c.protocol }}</td>
+                <td>{{ c.state }}</td>
+                <td>{{ c.local }}</td>
+                <td>{{ c.peer }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">No listening sockets reported.</p>
+    {% endif %}
+
+    <h2 class="section-title">Established connections</h2>
+    <p class="muted">Active TCP connections currently established.</p>
+    {% if metrics.established %}
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr><th>Protocol</th><th>State</th><th>Local</th><th>Peer</th></tr>
+          </thead>
+          <tbody>
+            {% for c in metrics.established %}
+              <tr>
+                <td>{{ c.protocol }}</td>
+                <td>{{ c.state }}</td>
+                <td>{{ c.local }}</td>
+                <td>{{ c.peer }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">No established connections reported.</p>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}
